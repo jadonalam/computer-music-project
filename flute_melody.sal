@@ -1,0 +1,18 @@
+;; Define a function for an improved flute melody
+define function improved_flute_melody()
+  begin
+    return seq(
+      flute(a4, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(c5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(e5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(g5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(a5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(g5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(e5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(c5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(a4, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1))
+    ) * pwl(0, 0, 0.5, 1, 8.5, 1, 9, 0)  ;; Add an overall envelope to the sequence
+  end
+
+;; Play the improved flute melody
+play improved_flute_melody()
