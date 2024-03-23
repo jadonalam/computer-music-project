@@ -13,6 +13,39 @@ define function improved_flute_melody()
       flute(a4, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1))
     ) * pwl(0, 0, 0.5, 1, 8.5, 1, 9, 0)  ;; Add an overall envelope to the sequence
   end
+;; Define a second flute melody
+define function flute_melody_2()
+  begin
+    return seq(
+      flute(d5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(f5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(a5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(d6, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1))
+    ) * pwl(0, 0, 0.5, 1, 3.5, 1, 4, 0)
+  end
+
+;; Define a third flute melody
+define function flute_melody_3()
+  begin
+    return seq(
+      flute(e5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(g5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(b5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(e6, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1))
+    ) * pwl(0, 0, 0.5, 1, 3.5, 1, 4, 0)
+  end
+
+;; Define a fourth flute melody
+define function flute_melody_4()
+  begin
+    return seq(
+      flute(c5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(e5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(g5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(c6, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1))
+    ) * pwl(0, 0, 0.5, 1, 3.5, 1, 4, 0)
+  end
+
 
 ;; Play the improved flute melody
 play improved_flute_melody()
