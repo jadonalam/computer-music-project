@@ -1,0 +1,400 @@
+;; Define a function for an improved flute melody
+define function improved_flute_melody()
+  begin
+    return seq(
+      flute(a4, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(c5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(e5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(g5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(a5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(g5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(e5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(c5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(a4, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1))
+    ) * pwl(0, 0, 0.5, 1, 8.5, 1, 9, 0)  ;; Add an overall envelope to the sequence
+  end
+;; Define a second flute melody
+define function flute_melody_2()
+  begin
+    return seq(
+      flute(d5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(f5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(a5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(d6, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1))
+    ) * pwl(0, 0, 0.5, 1, 3.5, 1, 4, 0)
+  end
+
+;; Define a third flute melody
+define function flute_melody_3()
+  begin
+    return seq(
+      flute(e5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(g5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(b5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(e6, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1))
+    ) * pwl(0, 0, 0.5, 1, 3.5, 1, 4, 0)
+  end
+
+;; Define a fourth flute melody
+define function flute_melody_4()
+  begin
+    return seq(
+      flute(c5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(e5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(g5, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1)),
+      flute(c6, env(0.01, 0, 0.2, 0.8, 0.8, 0.8, 1))
+    ) * pwl(0, 0, 0.5, 1, 3.5, 1, 4, 0)
+  end
+
+;; Define the wind sound function with noise and filters
+define function wind()
+  begin
+    ;; Generate white noise
+    set noise = noise(10)
+
+    ;; Apply a low-pass filter to simulate air friction
+    set filtered_noise = reson(noise, 600, 1000, 1)
+
+    ;; Modulate the cutoff frequency of the filter for variation
+    set modulated_filter = reson(noise, pwlv(500, 1, 1000, 1, 700, 1) * lfo(0.05), 1000, 1)
+
+    ;; Apply an amplitude envelope for a natural fade in and out
+    set env = pwl(0, 0, 0.5, 1, 9.5, 1, 10, 0)
+
+    return modulated_filter * env
+  end
+
+;; Play the wind sound
+;;play wind() ~ 5
+
+
+
+define function whistling_wind()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 2000, 100, 1)  ;; Higher frequency for a whistling effect
+    set modulated_filter = reson(filtered_noise, pwlv(1800, 1, 2200, 1, 2000, 1) * lfo(0.2), 100, 1)
+    set env = pwl(0, 0, 0.5, 1, 9.5, 1, 10, 0)
+    return modulated_filter * env
+  end
+
+;;play whistling_wind() ~ 2.1
+
+define function loud_wind()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 500, 2000, 1)  ;; Wider bandwidth for a fuller sound
+    set modulated_filter = reson(filtered_noise, pwlv(400, 1, 600, 1, 500, 1) * lfo(0.1), 2000, 1)
+    set env = pwl(0, 0, 1, 1, 9, 1, 10, 0)  ;; Shorter fade in and out for a more abrupt sound
+    return modulated_filter * env
+  end
+
+
+define function soft_wind()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 300, 500, 1)  ;; Lower frequency and narrower bandwidth for a softer sound
+    set modulated_filter = reson(filtered_noise, pwlv(250, 1, 350, 1, 300, 1) * lfo(0.05), 500, 1)
+    set env = pwl(0, 0, 2, 0.5, 8, 0.5, 10, 0)  ;; Gentler envelope for a softer sound
+    return modulated_filter * env
+  end
+
+;; Define the wind sound function with noise and filters
+define function wind()
+  begin
+    ;; Generate white noise
+    set noise = noise(10)
+
+    ;; Apply a low-pass filter to simulate air friction
+    set filtered_noise = reson(noise, 600, 1000, 1)
+
+    ;; Modulate the cutoff frequency of the filter for variation
+    set modulated_filter = reson(noise, pwlv(500, 1, 1000, 1, 700, 1) * lfo(0.05), 1000, 1)
+
+    ;; Apply an amplitude envelope for a natural fade in and out
+    set env = pwl(0, 0, 0.5, 1, 9.5, 1, 10, 0)
+
+    return modulated_filter * env
+  end
+
+;; Play the wind sound
+;;play wind() ~ 5
+
+
+
+define function whistling_wind()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 2000, 100, 1)  ;; Higher frequency for a whistling effect
+    set modulated_filter = reson(filtered_noise, pwlv(1800, 1, 2200, 1, 2000, 1) * lfo(0.2), 100, 1)
+    set env = pwl(0, 0, 0.5, 1, 9.5, 1, 10, 0)
+    return modulated_filter * env
+  end
+
+;;play whistling_wind() ~ 2.1
+
+define function loud_wind()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 500, 2000, 1)  ;; Wider bandwidth for a fuller sound
+    set modulated_filter = reson(filtered_noise, pwlv(400, 1, 600, 1, 500, 1) * lfo(0.1), 2000, 1)
+    set env = pwl(0, 0, 1, 1, 9, 1, 10, 0)  ;; Shorter fade in and out for a more abrupt sound
+    return modulated_filter * env
+  end
+
+
+define function soft_wind()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 300, 500, 1)  ;; Lower frequency and narrower bandwidth for a softer sound
+    set modulated_filter = reson(filtered_noise, pwlv(250, 1, 350, 1, 300, 1) * lfo(0.05), 500, 1)
+    set env = pwl(0, 0, 2, 0.5, 8, 0.5, 10, 0)  ;; Gentler envelope for a softer sound
+    return modulated_filter * env
+  end
+
+
+;; Define a simple melody function
+define function simple_melody()
+  begin
+    set melody = seq(
+      osc(62, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(68, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(69, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(70, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(73, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(76, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(77, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(36, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(69, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(71, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0)
+    )
+    return melody
+  end
+
+;; Combine wind sounds and melody for the full composition
+define function full_composition()
+  begin
+    return sim(
+      wind() ~ 5,
+      sim(whistling_wind() ~ 5, simple_melody()),
+      loud_wind() ~ 5,
+      sim(soft_wind() ~ 5, simple_melody()),
+      wind() ~ 5,
+      simple_melody(),
+      whistling_wind() ~ 5
+    )
+  end
+
+define function gentle_stream()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 500, 200, 1)
+    set env = pwl(0, 0, 0.5, 1, 9.5, 1, 10, 0)
+    return filtered_noise * env
+  end
+
+define function ocean_waves()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 100, 1000, 1)
+    set modulated_filter = reson(filtered_noise, pwlv(80, 1, 150, 1, 100, 1) * lfo(0.1), 1000, 1)
+    set env = pwl(0, 0, 2, 1, 8, 1, 10, 0)
+    return modulated_filter * env
+  end
+
+define function rainfall()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 2000, 300, 1)
+    set env = pwl(0, 0, 0.2, 1, 9.8, 1, 10, 0)
+    return filtered_noise * env
+  end
+
+;; Define a function to play a clarinet chord
+function clarinet_chord(step, dur)
+  return sim(clarinet(step, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)),
+             clarinet(step + 4, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)),
+             clarinet(step + 7, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)))
+
+;; Define a function to play a flute chord
+function flute_chord(step, dur)
+  return sim(flute(step, env(0.01, 0, 0.1, 0.7, 0.7, 0.7, dur)),
+             flute(step + 4, env(0.01, 0, 0.1, 0.7, 0.7, 0.7, dur)),
+             flute(step + 7, env(0.01, 0, 0.1, 0.7, 0.7, 0.7, dur)))
+
+;; Define a function to play a bowed chord
+function bowed_chord(step, dur)
+  return sim(bowed(step, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)),
+             bowed(step + 4, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)),
+             bowed(step + 7, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)))
+
+;; Play an orchestral chord progression
+
+;; Define a function to play a clarinet chord with dynamics
+function clarinet_chord_dyn(step, dur, vel)
+  return sim(clarinet(step, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)),
+             clarinet(step + 4, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)),
+             clarinet(step + 7, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)))
+
+;; Define a function to play a flute chord with dynamics
+function flute_chord_dyn(step, dur, vel)
+  return sim(flute(step, env(0.01, 0, 0.1, vel, 0.7 * vel, 0.7 * vel, dur)),
+             flute(step + 4, env(0.01, 0, 0.1, vel, 0.7 * vel, 0.7 * vel, dur)),
+             flute(step + 7, env(0.01, 0, 0.1, vel, 0.7 * vel, 0.7 * vel, dur)))
+
+
+;; Define a function to play a bowed string chord with dynamics
+function bowed_chord_dyn(step, dur, vel)
+  return sim(bowed(step, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)),
+             bowed(step + 4, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)),
+             bowed(step + 7, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)))
+
+;; Define the wind sound function with noise and filters
+define function wind()
+  begin
+    ;; Generate white noise
+    set noise = noise(10)
+
+    ;; Apply a low-pass filter to simulate air friction
+    set filtered_noise = reson(noise, 600, 1000, 1)
+
+    ;; Modulate the cutoff frequency of the filter for variation
+    set modulated_filter = reson(noise, pwlv(500, 1, 1000, 1, 700, 1) * lfo(0.05), 1000, 1)
+
+    ;; Apply an amplitude envelope for a natural fade in and out
+    set env = pwl(0, 0, 0.5, 1, 9.5, 1, 10, 0)
+
+    return modulated_filter * env
+  end
+
+;; Define a function to play a clarinet chord
+function clarinet_chord(step, dur)
+  return sim(clarinet(step, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)),
+             clarinet(step + 4, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)),
+             clarinet(step + 7, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)))
+
+;; Define a function to play a flute chord
+function flute_chord(step, dur)
+  return sim(flute(step, env(0.01, 0, 0.1, 0.7, 0.7, 0.7, dur)),
+             flute(step + 4, env(0.01, 0, 0.1, 0.7, 0.7, 0.7, dur)),
+             flute(step + 7, env(0.01, 0, 0.1, 0.7, 0.7, 0.7, dur)))
+
+;; Define a function to play a bowed chord
+function bowed_chord(step, dur)
+  return sim(bowed(step, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)),
+             bowed(step + 4, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)),
+             bowed(step + 7, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)))
+
+;; Play an orchestral chord progression
+
+;; Define a function to play a clarinet chord with dynamics
+function clarinet_chord_dyn(step, dur, vel)
+  return sim(clarinet(step, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)),
+             clarinet(step + 4, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)),
+             clarinet(step + 7, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)))
+
+;; Define a function to play a flute chord with dynamics
+function flute_chord_dyn(step, dur, vel)
+  return sim(flute(step, env(0.01, 0, 0.1, vel, 0.7 * vel, 0.7 * vel, dur)),
+             flute(step + 4, env(0.01, 0, 0.1, vel, 0.7 * vel, 0.7 * vel, dur)),
+             flute(step + 7, env(0.01, 0, 0.1, vel, 0.7 * vel, 0.7 * vel, dur)))
+
+
+;; Define a function to play a bowed string chord with dynamics
+function bowed_chord_dyn(step, dur, vel)
+  return sim(bowed(step, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)),
+             bowed(step + 4, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)),
+             bowed(step + 7, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)))
+
+;; Define the wind sound function with noise and filters
+define function wind()
+  begin
+    ;; Generate white noise
+    set noise = noise(10)
+
+    ;; Apply a low-pass filter to simulate air friction
+    set filtered_noise = reson(noise, 600, 1000, 1)
+
+    ;; Modulate the cutoff frequency of the filter for variation
+    set modulated_filter = reson(noise, pwlv(500, 1, 1000, 1, 700, 1) * lfo(0.05), 1000, 1)
+
+    ;; Apply an amplitude envelope for a natural fade in and out
+    set env = pwl(0, 0, 0.5, 1, 9.5, 1, 10, 0)
+
+    return modulated_filter * env
+  end
+
+;; Play the wind sound
+;;play wind() ~ 5
+
+
+
+define function whistling_wind()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 2000, 100, 1)  ;; Higher frequency for a whistling effect
+    set modulated_filter = reson(filtered_noise, pwlv(1800, 1, 2200, 1, 2000, 1) * lfo(0.2), 100, 1)
+    set env = pwl(0, 0, 0.5, 1, 9.5, 1, 10, 0)
+    return modulated_filter * env
+  end
+
+;;play whistling_wind() ~ 2.1
+
+define function loud_wind()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 500, 2000, 1)  ;; Wider bandwidth for a fuller sound
+    set modulated_filter = reson(filtered_noise, pwlv(400, 1, 600, 1, 500, 1) * lfo(0.1), 2000, 1)
+    set env = pwl(0, 0, 1, 1, 9, 1, 10, 0)  ;; Shorter fade in and out for a more abrupt sound
+    return modulated_filter * env
+  end
+
+
+define function soft_wind()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 300, 500, 1)  ;; Lower frequency and narrower bandwidth for a softer sound
+    set modulated_filter = reson(filtered_noise, pwlv(250, 1, 350, 1, 300, 1) * lfo(0.05), 500, 1)
+    set env = pwl(0, 0, 2, 0.5, 8, 0.5, 10, 0)  ;; Gentler envelope for a softer sound
+    return modulated_filter * env
+  end
+
+
+;; Define the overall composition
+define function dynamic_soundscape_extended()
+  begin
+    return seq(
+      ;; Wind and flute melody for the first 10 seconds
+      sim(wind() ~ 5, improved_flute_melody() ~ 5),
+      sim(whistling_wind() ~ 5, flute_melody_2() ~ 5),
+      
+      ;; Flute melody with bird sounds for the next 10 seconds
+      sim(flute_melody_3() ~ 5, bird_song() ~ 5),
+      sim(flute_melody_4() ~ 5, loud_wind() ~ 5),
+      
+      ;; Orchestra and wind sounds with flute melody for the next 10 seconds
+      sim(clarinet_chord_dyn(C4, 2, 0.6) ~ 5, flute_melody_2() ~ 5, soft_wind() ~ 5),
+      sim(flute_chord_dyn(G4, 2, 0.6) ~ 5, flute_melody_3() ~ 5, rainfall() ~ 5),
+      
+      ;; Flute melody with water sounds for the next 10 seconds
+      sim(flute_melody_4() ~ 5, gentle_stream() ~ 5),
+      sim(improved_flute_melody() ~ 5, ocean_waves() ~ 5),
+      
+      ;; Repeat the cycle for an extended composition
+      sim(wind() ~ 5, flute_melody_2() ~ 5),
+      sim(whistling_wind() ~ 5, flute_melody_3() ~ 5),
+      sim(flute_melody_4() ~ 5, bird_chirp() ~ 5),
+      sim(improved_flute_melody() ~ 5, loud_wind() ~ 5),
+      sim(clarinet_chord_dyn(C4, 2, 0.6) ~ 5, flute_melody_2() ~ 5, soft_wind() ~ 5),
+      sim(flute_chord_dyn(G4, 2, 0.6) ~ 5, flute_melody_3() ~ 5, rainfall() ~ 5),
+      sim(flute_melody_4() ~ 5, gentle_stream() ~ 5),
+      sim(improved_flute_melody() ~ 5, ocean_waves() ~ 5),
+      
+      ;; Closing with wind and flute melody for the final 10 seconds
+      sim(wind() ~ 5, flute_melody_2() ~ 5),
+      sim(whistling_wind() ~ 5, flute_melody_3() ~ 5)
+    )
+  end
+
+;; Play the extended dynamic soundscape composition
+play dynamic_soundscape_extended()
