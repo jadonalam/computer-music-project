@@ -1,0 +1,30 @@
+define function flowing_water()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 300, 1000, 1)  ;; Low-pass filter for a smoother sound
+    set modulated_filter = reson(filtered_noise, pwlv(250, 1, 350, 1, 300, 1) * lfo(0.2), 1000, 1)
+    set env = pwl(0, 0, 1, 1, 9, 1, 10, 0)  ;; Steady envelope for continuous flow
+    return modulated_filter * env
+  end
+
+play flowing_water()
+
+define function dripping_water()
+  begin
+    ;; Generate a short sine wave burst for the droplet
+    set droplet = osc(c6, 0.05) * pwl(0, 0, 0.01, 1, 0.05, 0)
+
+    ;; Generate a filtered noise burst for the splash
+    set splash = (reson(noise(0.1), 800, 50, 1) * pwl(0, 0, 0.01, 1, 0.1, 0)) ~ 0.15
+
+    ;; Combine the droplet and splash sounds with varying time intervals
+    return seq(
+      droplet, at(0.1, splash),
+      at(1.0, droplet), at(1.1, splash),
+      at(2.0, droplet), at(2.1, splash),
+      at(3.0, droplet), at(3.1, splash)
+    )
+  end
+
+
+play dripping_water()

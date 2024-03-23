@@ -1,0 +1,88 @@
+;; Define the wind sound function with noise and filters
+define function wind()
+  begin
+    ;; Generate white noise
+    set noise = noise(10)
+
+    ;; Apply a low-pass filter to simulate air friction
+    set filtered_noise = reson(noise, 600, 1000, 1)
+
+    ;; Modulate the cutoff frequency of the filter for variation
+    set modulated_filter = reson(noise, pwlv(500, 1, 1000, 1, 700, 1) * lfo(0.05), 1000, 1)
+
+    ;; Apply an amplitude envelope for a natural fade in and out
+    set env = pwl(0, 0, 0.5, 1, 9.5, 1, 10, 0)
+
+    return modulated_filter * env
+  end
+
+;; Play the wind sound
+;;play wind() ~ 5
+
+
+
+define function whistling_wind()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 2000, 100, 1)  ;; Higher frequency for a whistling effect
+    set modulated_filter = reson(filtered_noise, pwlv(1800, 1, 2200, 1, 2000, 1) * lfo(0.2), 100, 1)
+    set env = pwl(0, 0, 0.5, 1, 9.5, 1, 10, 0)
+    return modulated_filter * env
+  end
+
+;;play whistling_wind() ~ 2.1
+
+define function loud_wind()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 500, 2000, 1)  ;; Wider bandwidth for a fuller sound
+    set modulated_filter = reson(filtered_noise, pwlv(400, 1, 600, 1, 500, 1) * lfo(0.1), 2000, 1)
+    set env = pwl(0, 0, 1, 1, 9, 1, 10, 0)  ;; Shorter fade in and out for a more abrupt sound
+    return modulated_filter * env
+  end
+
+
+define function soft_wind()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 300, 500, 1)  ;; Lower frequency and narrower bandwidth for a softer sound
+    set modulated_filter = reson(filtered_noise, pwlv(250, 1, 350, 1, 300, 1) * lfo(0.05), 500, 1)
+    set env = pwl(0, 0, 2, 0.5, 8, 0.5, 10, 0)  ;; Gentler envelope for a softer sound
+    return modulated_filter * env
+  end
+
+
+;; Define a simple melody function
+define function simple_melody()
+  begin
+    set melody = seq(
+      osc(62, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(68, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(69, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(70, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(73, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(76, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(77, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(36, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(69, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0),
+      osc(71, 1) * pwl(0, 0, 0.2, 1, 0.8, 1, 1, 0)
+    )
+    return melody
+  end
+
+;; Combine wind sounds and melody for the full composition
+define function full_composition()
+  begin
+    return sim(
+      wind() ~ 5,
+      sim(whistling_wind() ~ 5, simple_melody()),
+      loud_wind() ~ 5,
+      sim(soft_wind() ~ 5, simple_melody()),
+      wind() ~ 5,
+      simple_melody(),
+      whistling_wind() ~ 5
+    )
+  end
+
+;; Play the full composition
+play full_composition()

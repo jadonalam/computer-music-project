@@ -1,0 +1,20 @@
+;; Define a simple bird chirp
+define function bird_chirp()
+  begin
+    return osc(c6) * pwl(0, 0, 0.1, 1, 0.2, 0) +
+           osc(e6) * pwl(0.2, 0, 0.3, 1, 0.4, 0)
+  end
+
+;; Define a more complex bird song
+define function bird_song()
+  begin
+    return seq(
+      bird_chirp(),
+      bird_chirp() * 1.1,  ;; Slightly higher pitch
+      bird_chirp() * 1.2   ;; Even higher pitch
+    )
+  end
+
+;; Play the bird sounds
+play bird_chirp() ~ 5
+play bird_song() ~ 5

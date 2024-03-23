@@ -1,0 +1,27 @@
+;; Define the overall composition
+define function soundscape_composition()
+  begin
+    return seq(
+      ;; Wind and flute melody for the first 30 seconds
+      sim(wind() ~ 10, improved_flute_melody() ~ 10),
+      sim(whistling_wind() ~ 10, improved_flute_melody() ~ 10),
+      
+      ;; Flute melody with bird sounds for the next 30 seconds
+      sim(improved_flute_melody() ~ 10, bird_song() ~ 10),
+      sim(improved_flute_melody() ~ 10, bird_chirp() ~ 10),
+      
+      ;; Orchestra and wind sounds with flute melody for the next 30 seconds
+      sim(clarinet_chord_dyn(C4, 2, 0.6) ~ 10, improved_flute_melody() ~ 10, loud_wind() ~ 10),
+      sim(flute_chord_dyn(G4, 2, 0.6) ~ 10, improved_flute_melody() ~ 10, soft_wind() ~ 10),
+      
+      ;; Flute melody with rainfall for the next 30 seconds
+      sim(improved_flute_melody() ~ 10, rainfall() ~ 10),
+      
+      ;; Closing with wind and flute melody for the final 30 seconds
+      sim(wind() ~ 10, improved_flute_melody() ~ 10),
+      sim(whistling_wind() ~ 10, improved_flute_melody() ~ 10)
+    )
+  end
+
+;; Play the soundscape composition
+play soundscape_composition()
