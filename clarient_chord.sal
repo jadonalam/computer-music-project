@@ -1,0 +1,60 @@
+;; Define a function to play a clarinet chord
+function clarinet_chord(step, dur)
+  return sim(clarinet(step, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)),
+             clarinet(step + 4, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)),
+             clarinet(step + 7, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)))
+
+;; Define a function to play a flute chord
+function flute_chord(step, dur)
+  return sim(flute(step, env(0.01, 0, 0.1, 0.7, 0.7, 0.7, dur)),
+             flute(step + 4, env(0.01, 0, 0.1, 0.7, 0.7, 0.7, dur)),
+             flute(step + 7, env(0.01, 0, 0.1, 0.7, 0.7, 0.7, dur)))
+
+;; Define a function to play a bowed chord
+function bowed_chord(step, dur)
+  return sim(bowed(step, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)),
+             bowed(step + 4, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)),
+             bowed(step + 7, env(0.01, 0, 0.3, 0.9, 0.8, 0.9, dur)))
+
+;; Play an orchestral chord progression
+
+;; Define a function to play a clarinet chord with dynamics
+function clarinet_chord_dyn(step, dur, vel)
+  return sim(clarinet(step, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)),
+             clarinet(step + 4, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)),
+             clarinet(step + 7, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)))
+
+;; Define a function to play a flute chord with dynamics
+function flute_chord_dyn(step, dur, vel)
+  return sim(flute(step, env(0.01, 0, 0.1, vel, 0.7 * vel, 0.7 * vel, dur)),
+             flute(step + 4, env(0.01, 0, 0.1, vel, 0.7 * vel, 0.7 * vel, dur)),
+             flute(step + 7, env(0.01, 0, 0.1, vel, 0.7 * vel, 0.7 * vel, dur)))
+
+
+;; Define a function to play a bowed string chord with dynamics
+function bowed_chord_dyn(step, dur, vel)
+  return sim(bowed(step, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)),
+             bowed(step + 4, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)),
+             bowed(step + 7, env(0.01, 0, 0.3, vel, 0.8 * vel, 0.9 * vel, dur)))
+
+;; Define the wind sound function with noise and filters
+define function wind()
+  begin
+    ;; Generate white noise
+    set noise = noise(10)
+
+    ;; Apply a low-pass filter to simulate air friction
+    set filtered_noise = reson(noise, 600, 1000, 1)
+
+    ;; Modulate the cutoff frequency of the filter for variation
+    set modulated_filter = reson(noise, pwlv(500, 1, 1000, 1, 700, 1) * lfo(0.05), 1000, 1)
+
+    ;; Apply an amplitude envelope for a natural fade in and out
+    set env = pwl(0, 0, 0.5, 1, 9.5, 1, 10, 0)
+
+    return modulated_filter * env
+  end
+
+;; Play the wind sound
+;;play wind() ~ 5
+
