@@ -1,0 +1,26 @@
+define function gentle_stream()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 500, 200, 1)
+    set env = pwl(0, 0, 0.5, 1, 9.5, 1, 10, 0)
+    return filtered_noise * env
+  end
+
+define function ocean_waves()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 100, 1000, 1)
+    set modulated_filter = reson(filtered_noise, pwlv(80, 1, 150, 1, 100, 1) * lfo(0.1), 1000, 1)
+    set env = pwl(0, 0, 2, 1, 8, 1, 10, 0)
+    return modulated_filter * env
+  end
+
+define function rainfall()
+  begin
+    set noise = noise(10)
+    set filtered_noise = reson(noise, 2000, 300, 1)
+    set env = pwl(0, 0, 0.2, 1, 9.8, 1, 10, 0)
+    return filtered_noise * env
+  end
+
+play sim(gentle_stream(), ocean_waves(), rainfall()) ~ 10
